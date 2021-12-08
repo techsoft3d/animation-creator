@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>Animation Creator</title>
+        <script type="text/javascript" src="../src/js/jquery-3.5.1.min.js"></script>
+        <script type="text/javascript" src="../common/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="../common/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../src/js/hoops_web_viewer.js"></script>
+        <script type="text/javascript" src="../src/js/web_viewer_ui.js"></script>
+        <script type="text/javascript" src="../common/js/create_viewer.js"></script>
+        <script type="text/javascript" src="../common/js/general_func.js"></script>
+        <script type="text/javascript" src="../common/js/common_utilities.js"></script>
+        <script type="text/javascript" src="js/animation_creator/animation_creator.js"></script>
+        <script type="text/javascript" src="js/animation_creator/operators.js"></script>
+        <script type="text/javascript" src="js/animation_creator/handle_operator_operator.js"></script>
+        <script type="text/javascript" src="js/animation_creator/resource.js"></script>
+        <script type="text/javascript" src="../common/js/assembly_guide_line.js"></script>
+        <script type="text/javascript" src="js/animation_steps.js"></script>
+        <script type="text/javascript" src="js/animation_common.js"></script>
+        <script type="text/javascript" src="js/keyframe_animation.js"></script>
+
+        <link rel="stylesheet" href="../common/jquery-ui-1.12.1/jquery-ui.css">
+        <link rel="stylesheet" href="../common/css/bootstrap.min.css" type="text/css">
+        <link rel="stylesheet" href="css/animation_creator.css">
+
+<!--    jstree-->
+        <script type="text/javascript" src="../common/js/jstree/jstree.min.js"></script>
+        <script type="text/javascript" src="js/jstree_func.js"></script>
+        <link rel="stylesheet" href="../common/js/jstree/style.min.css">
+
+        <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+        <script type="text/javascript" src="../common/jQuery-File-Upload/js/jquery.iframe-transport.js"></script>
+
+        <!-- The basic File Upload plugin -->
+        <script type="text/javascript" src="../common/jQuery-File-Upload/js/jquery.fileupload.js"></script>
+        <link rel="stylesheet" href="../common/jQuery-File-Upload/css/jquery.fileupload.css">
+
+        <script type="text/javascript">
+            function browserLanguage() {
+                try {
+                    return (navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0,2)
+                }
+                    catch(e) {
+                    return undefined;
+                }
+            }
+            
+            var mainViewer;
+            var modelName;
+            var targetXYZ;
+            var targetBtn;
+            window.onload = function () {
+                var language = browserLanguage();
+                var lang = getURLArgument("lang");
+                if (lang != undefined)
+                    language = lang;
+
+                mainViewer = new animation_creator(language);
+
+                var viewerMode = getURLArgument("viewer");
+                modelName = getURLArgument("instance");
+                if (modelName == undefined)
+                    modelName = "_empty";
+                var reverseProxy = getURLArgument("proxy");
+                var extension = getURLArgument("extension");
+                mainViewer.start(viewerMode, modelName, reverseProxy, extension);
+            };
+        </script>
+    </head>
+    <body>
+        <div id="content">
+            <div id="cmdBtns">
+                <input class="toolbarBtn" data-command="home" title="Home" type="image" name="image_button" src="css/images/home.png" />
+                <input class="toolbarBtn" data-command="camera" title="Camera" type="image" name="image_button" src="css/images/camera.png" />
+                <input class="toolbarBtn" data-command="translate" title="Translate" type="image" name="image_button" src="css/images/translate.png" />
+                <input class="toolbarBtn" data-command="handTranslate" title="Hand Translate" type="image" name="image_button" src="css/images/hand.png" />
+                <input class="toolbarBtn" data-command="rotate" title="Rotate" type="image" name="image_button" src="css/images/rotate.png" />
+                <input class="toolbarBtn" data-command="hide" title="Hide Nodes" type="image" name="image_button" src="css/images/hide.png" />
+                <input class="toolbarBtn" data-command="blink" title="Blink Nodes" type="image" name="image_button" src="css/images/blink.png" />
+            </div>
+            <div id="container" class="ui-widget-content"></div>
+            <div id="stepContainer">
+                <table id="stepTable">
+                    <tr><th>#</th><th>Gr</th><th>Delete</th><th>Type</th><th>Nodes</th><th>Direction/Axis</th><th>Center</th><th>Distance/Angle</th><th>Start</th><th>Duration</th><th style="width:60%;">Timeline</th></tr>
+                </table>
+            </div>
+        </div>
+        <div id="footer">© Tech Soft 3D All Rights Reserved</div>
+        
+        <div id="stepMainteBtns">
+            <input class="toolbarBtn" data-command="reorder" title="Reorder" type="image" name="image_button" src="css/images/reorder.png" />
+            <!-- <input class="toolbarBtn" data-command="save" title="Save" type="image" name="image_button" src="css/images/save.png" /> -->
+            <input class="toolbarBtn" data-command="download" title="Serialize" type="image" name="image_button" src="css/images/download.png" />
+        </div>
+
+        <div id="modelTree">
+            <div id="tree1"></div>
+        </div>
+        
+        <div id="animateBtns">
+            <input class="animateBtn" data-command="rewind" title="Rewind" type="image" name="image_button" src="css/images/BTN_REWIND_N.png" />
+            <input class="animateBtn" data-command="play" title="Play" type="image" name="image_button" src="css/images/BTN_PLAY_N.png" />
+            <input class="animateBtn" data-command="pause" title="Pause" type="image" name="image_button" src="css/images/BTN_PAUSE_N.png" />
+        </div>
+        
+        <div id="versionInfo">Version Info</div>
+
+        <div class="commandDlg" id="translateDlg" style="display:none;">
+            <label id="lblParts" for="targetNodes" style="vertical-align:top">Parts:</label>
+                <select id="targetNodes" size="4" style="width:180px;height:60px;popup"></select><br />
+            <label id="lblAxis" for="axis">Rotation axis:</label>
+            <input type="radio" name="axis" value="X" checked="checked"><label>X</label>
+            <input type="radio" name="axis" value="Y"><label>Y</label>
+            <input type="radio" name="axis" value="Z"><label>Z</label>
+                <input type="radio" name="axis" value="C"><label id="lblCustom">Custom</label><br />
+            <div id="centerPoint">
+                <label id="lblCenter" for="point">Rotation center:</label>
+                <input id="point" type="text" /><br />
+            </div>
+            <div id="translateDistance">
+                <label id="lblDistance" for="distance">Distance:</label>
+                <input class="numberInput preview" id="distance" type="number" value="100" /><br />
+            </div>
+            <div id="rotateAngle">
+                <label id="lblAngle" for="angle">Rotation angle:</label>
+                <input class="numberInput" id="angle" type="number" value="90" /><br />
+            </div>
+            <label id="lblStart" for="start">Start:</label>
+                <input class="numberInput" id="start" type="number" /><br />
+            <label id="lblDuration" for="duration">Duration:</label>
+                <input class="numberInput" id="duration" type="number" value="1" /><br />
+            <br />
+            <input id="btnOK" type="button" value="OK">
+            <input id="btnCancel" type="button" value="Cancel">
+        </div>
+        
+        <div id="XYZDlg" style="display:none;">
+            X:<br />
+            <input type="text" id="dlgX" style="text-align:right;width:200px" /><br />
+            Y:<br />
+            <input type="text" id="dlgY" style="text-align:right;width:200px" /><br />
+            Z:<br />
+            <input type="text" id="dlgZ" style="text-align:right;width:200px" /><br />
+        </div>
+    
+        <div id="dlOptionsDlg" style="display: none">
+            <textarea id="animationJson"></textarea>
+        </div>
+    
+        <img id="loadingImage" class="centerBlock" src="../src/css/images/spinner.gif" style="display:none;" />
+    </body>
+</html>
