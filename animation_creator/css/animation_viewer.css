@@ -1,0 +1,23 @@
+#container {
+    overflow: hidden;
+    position: relative;
+}#footer {
+    text-align: right;
+    font-size: 12px;
+    margin-right: 10px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+#animateBtns {
+    position: absolute;
+}
+.animateBtn {
+    width: 36px;
+    height: 36px;
+}
+#animationJson {
+    height:160px;
+    margin-left: 5px;
+    position: absolute;
+}

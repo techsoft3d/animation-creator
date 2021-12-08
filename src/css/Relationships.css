@@ -1,0 +1,38 @@
+.relationshipsWindow {
+  overflow: hidden;
+
+  background: white;
+  cursor: default;
+  height: 25%;
+
+  /* prevent window from sliding up on resize*/
+  top: 0 !important;
+
+  padding-top: 10px;
+}
+
+.relationshipsWindow.hidden {
+  display: none;
+  height: 0px;
+  padding: 0px;
+}
+
+.relationshipsWindow .ui-resizable-handle.ui-resizable-n {
+  top: 0;
+  background: grey;
+  height: 10px;
+}
+
+.relationshipsWindow .tree-scroll-container {
+  height: 100%;
+}
+
+/* SCA : will need to be removed if we have a panel with tab */
+.relationshipsWindow .iScrollVerticalScrollbar {
+  margin-top: 10px;
+}
+
+.ui-modeltree-label_unaccess {
+  opacity: 0.6;
+  font-style: italic;
+}
