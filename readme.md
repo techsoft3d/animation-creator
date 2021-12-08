@@ -1,6 +1,6 @@
 ## HOOPS Web Platform - Animation Creator Demo
 
-## See this demo running live on [GitHub Pages](https://pages.github.com/). 
+## See this demo running live on [GitHub Pages](https://techsoft3d.github.io/animation-creator/). 
 
 ## How to run this repo locally 
 
