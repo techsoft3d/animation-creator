@@ -1,6 +1,6 @@
 function LoadStepData(modelName) {
     return new Promise(function (resolve, reject) {
-        var fileName = "jsons/" + modelName + ".json?" + (new Date).getTime();
+        var fileName = "json/" + modelName + ".json?" + (new Date).getTime();
         $.get(fileName).done(function(data, textStatus, jqXHR){
             $.getJSON(fileName, function (data) {
                 if (data != undefined) {

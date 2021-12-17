@@ -256,7 +256,7 @@ class AnimationSteps {
                 steps: this._steps
             }
             var str = JSON.stringify(data);
-            exportAsJson(str, "../../animation_creator/jsons/" + modelName + ".json").then(function(){
+            exportAsJson(str, "../../animation_creator/json/" + modelName + ".json").then(function(){
                 resolve();
             });
         });
