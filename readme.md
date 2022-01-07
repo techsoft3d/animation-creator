@@ -2,6 +2,8 @@
 
 See this demo running live on [GitHub Pages](https://techsoft3d.github.io/animation-creator/animation_creator.html?viewer=SCS&instance=microengine). 
 
+Take a look at the Animation Creator Demo Walkthrough Video [here](https://www.youtube.com/watch?v=D19tZJvZBlQ)
+
 ## In order to run locally
 
 We recommand using [Visual Studio Code](https://code.visualstudio.com/download) with the Live Server extension to run this application locally.
